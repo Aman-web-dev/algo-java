@@ -5,8 +5,56 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.LinkedList;
+import java.util.HashSet;
 
 class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        char[] arr = s.toCharArray();
+        int RightPointer=0;
+        int LeftPointer=0;
+        int maxScore= 0;
+
+        HashSet<Character> myHashSet = new HashSet<Character>();
+
+        while (RightPointer < arr.length) {
+        if(myHashSet.contains(arr[RightPointer])){
+           myHashSet.remove(arr[LeftPointer]);
+           LeftPointer+=1;
+        }else{
+            myHashSet.add(arr[RightPointer]);
+            maxScore=Math.max(maxScore,RightPointer-LeftPointer+1);
+            RightPointer+=1;
+        }
+        }
+        return maxScore;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        ListNode newList = new ListNode(0);
+        ListNode currentNode = newList;
+        int carry = 0;
+
+        while (l1 != null || l2 != null) {
+
+            int val1 = l1 != null ? l1.val : 0;
+            int val2 = l2 != null ? l2.val : 0;
+
+            int sum = val1 + val2 + carry;
+            carry = sum / 10;
+            currentNode.next = new ListNode(sum % 10);
+            currentNode = currentNode.next;
+            if (l1 != null)
+                l1 = l1.next;
+            if (l2 != null)
+                l2 = l2.next;
+        }
+        if (carry > 0) {
+            currentNode.next = new ListNode(carry);
+        }
+        return newList.next;
+    }
 
     public boolean isValid(String s) {
         Stack<Character> newStack = new Stack<>();
@@ -16,9 +64,10 @@ class Solution {
             if (ch == '(' || ch == '[' || ch == '{') {
                 newStack.push(ch);
             } else {
-                    
-                if (newStack.isEmpty()) return false;
-                 else if ((ch == ')' && newStack.peek() == '(')
+
+                if (newStack.isEmpty())
+                    return false;
+                else if ((ch == ')' && newStack.peek() == '(')
                         || (ch == ']' && newStack.peek() == '[')
                         || (ch == '}' && newStack.peek() == '{')) {
                     newStack.pop();
@@ -403,8 +452,8 @@ public class Demo {
     public static void main(String[] args) {
 
         Solution dsaPractice = new Solution();
-        String s = "[{}{}{}(})[]]";
-        boolean answer = dsaPractice.isValid(s);
+        String s = "pwwkew";
+        int answer = dsaPractice.lengthOfLongestSubstring(s);
         System.out.println(answer);
     }
 }
